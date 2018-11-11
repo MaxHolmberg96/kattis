@@ -1,0 +1,1 @@
+print int(round(float(raw_input()) * float(5280000) / float(4854)))
