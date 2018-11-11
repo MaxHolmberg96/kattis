@@ -1,3 +1,6 @@
+#File to download all the (latest) accepted solutions from https://open.kattis.com
+#Run where you want the files to be downloaded to.
+
 import requests
 import getpass
 from bs4 import BeautifulSoup as BS
