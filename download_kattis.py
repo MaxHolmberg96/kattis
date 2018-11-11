@@ -19,7 +19,7 @@ url = "https://open.kattis.com/login/email"
 session = requests.session()
 response = session.get(url)
 
-soup = BS(response.text)
+soup = BS(response.text, "lxml")
 csrf_token = soup.find('input', {"name": "csrf_token"})["value"]
 username = input("username:")
 password = getpass.getpass()
@@ -33,7 +33,7 @@ page = session.get("https://open.kattis.com/problems?show_solved=on&show_tried=o
 # for each problem in str_problems, visit https://open.kattis.com/users/max-holmberg/submissions/[problem_name]
 has_next = 1
 while has_next:
-    page_soup = BS(page.text)
+    page_soup = BS(page.text, "lxml")
     #get all the problems on the page
     problems = page_soup.find_all("tr", {"class" : "solved"})
     str_problems = []
@@ -44,11 +44,11 @@ while has_next:
 
     for problem in str_problems:
         response = session.get("https://open.kattis.com/users/max-holmberg/submissions/" + problem)
-        soup = BS(response.text)
+        soup = BS(response.text, "lxml")
         all_submissions = soup.find_all("td", {"class" : "accepted"})
         submission_id = all_submissions[0].find_parent("tr").find("td", {"class" : "submission_id"}).find("a").text
         response = session.get("https://open.kattis.com/submissions/" + str(submission_id))
-        soup = BS(response.text)
+        soup = BS(response.text, "lxml")
         file_name = soup.find("div", {"class" : "submission_code_container"})["data-filename"]
         response = session.get("https://open.kattis.com/submissions/" + str(submission_id) + "/source/" + file_name)
         file_type = file_name[file_name.index(".") + 1 :]
